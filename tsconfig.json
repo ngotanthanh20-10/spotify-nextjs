@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/Search.js", "components/Right.js", "components/RecentlyPlayed.js", "components/Poster.js", "components/Player.js", "components/Loader.js", "components/Dropdown.js", "components/Dashboard.js", "components/Body.js", "components/Sidebar.js", "components/Track.js", "pages/_app.js", "pages/about.js", "pages/index.js"],
   "exclude": ["node_modules"]
 }
