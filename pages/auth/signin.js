@@ -8,7 +8,7 @@ import Loader from "../../components/Loader";
 const Signin = ({ providers }) => {
   const { data: session } = useSession();
   const router = useRouter();
-
+  console.log(providers);
   useEffect(() => {
     if (session) {
       router.push("/");
@@ -16,7 +16,6 @@ const Signin = ({ providers }) => {
   }, [session]);
 
   if (session) return <Loader />;
-
   return (
     <div className="bg-black h-screen flex flex-col items-center pt-40 space-y-8">
       <Head>
@@ -46,8 +45,11 @@ const Signin = ({ providers }) => {
 
 export default Signin;
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  const { req } = context;
+  
   const providers = await getProviders();
+
   return {
     props: { providers },
   };

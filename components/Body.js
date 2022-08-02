@@ -4,15 +4,76 @@ import Poster from "./Poster";
 import Search from "./Search";
 import Track from "./Track";
 
-const Body = () => {
+const Body = ({ chooseTrack, spotifyApi }) => {
+  const { data: session } = useSession();
+  const accessToken = session?.accessToken;
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
+  const [newReleases, setNewReleases] = useState([]);
 
+  useEffect(() => {
+    if (!accessToken) return;
+    spotifyApi.setAccessToken(accessToken);
+  }, [accessToken]);
+
+  useEffect(() => {
+    if (!search) return setSearchResult([]);
+    if (!accessToken) return;
+    spotifyApi.searchTracks(search).then((res) => {
+      setSearchResult(
+        res.body.tracks.items.map((track) => {
+          return {
+            id: track.id,
+            artist: track.artists[0].name,
+            title: track.name,
+            uri: track.uri,
+            albumUrl: track.album.images[0].url,
+            popularity: track.popularity,
+          };
+        })
+      );
+    });
+  }, [search, accessToken]);
+
+  useEffect(() => {
+    if (!accessToken) return;
+    spotifyApi.getNewReleases().then((res) => {
+      setNewReleases(
+        res.body.albums.items.map((track) => {
+          return {
+            id: track.id,
+            artist: track.artists[0].name,
+            title: track.name,
+            uri: track.uri,
+            albumUrl: track.images[0].url,
+          };
+        })
+      );
+    });
+  }, [accessToken]);
   return (
-    <section className="bg-black ml-24 py-4 space-y-8 md:max-w-6xl flex-grow md:mr-2.5">
+    <section className="bg-black ml-24 py-4 space-y-8 md:max-w-10xl flex-grow md:mr-2.5">
       <Search search={search} setSearch={setSearch} />
-      <div className="grid overflow-y-scroll scrollbar-hide h-96 py-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-8 p-4">
-        <Poster />
+      <div className="grid overflow-y-scroll scrollbar-hide h-96 py-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-4 gap-y-8 p-4">
+        {searchResult.length === 0
+          ? newReleases
+              .slice(0, 5)
+              .map((track) => (
+                <Poster
+                  key={track.id}
+                  track={track}
+                  chooseTrack={chooseTrack}
+                />
+              ))
+          : searchResult
+              .slice(0, 5)
+              .map((track) => (
+                <Poster
+                  key={track.id}
+                  track={track}
+                  chooseTrack={chooseTrack}
+                />
+              ))}
       </div>
       <div className="flex gap-x-8 absolute min-w-full md:relative ml-6">
         <div className="hidden xl:inline max-w-[270px]">
@@ -31,6 +92,33 @@ const Body = () => {
           <button className="text-[#CECECE] bg-[#1A1A1A] text-[13px] py-3.5 px-4 rounded-2xl w-full font-bold bg-opacity-80 hover:bg-opacity-100 transition ease-out">
             All Genres
           </button>
+        </div>
+
+        <div className="w-full pr-11">
+          <h2 className="text-white font-bold mb-3">
+            {searchResult.length === 0 ? "New Releases" : "Tracks"}
+          </h2>
+          <div className="space-y-3 border-2 border-[#262626] rounded-2xl p-3 bg-[#0D0D0D] overflow-y-scroll h-[1000px] md:h-96 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-thumb-rounded hover:scrollbar-thumb-gray-500 w-[830px]">
+            {searchResult.length === 0
+              ? newReleases
+                  .slice(5, newReleases.length)
+                  .map((track) => (
+                    <Track
+                      key={track.id}
+                      track={track}
+                      chooseTrack={chooseTrack}
+                    />
+                  ))
+              : searchResult
+                  .slice(5, searchResult.length)
+                  .map((track) => (
+                    <Track
+                      key={track.id}
+                      track={track}
+                      chooseTrack={chooseTrack}
+                    />
+                  ))}
+          </div>
         </div>
       </div>
     </section>
