@@ -8,7 +8,7 @@ import Loader from "../../components/Loader";
 const Signin = ({ providers }) => {
   const { data: session } = useSession();
   const router = useRouter();
-  console.log(providers);
+
   useEffect(() => {
     if (session) {
       router.push("/");
@@ -45,11 +45,8 @@ const Signin = ({ providers }) => {
 
 export default Signin;
 
-export async function getServerSideProps(context) {
-  const { req } = context;
-  
+export async function getServerSideProps() {
   const providers = await getProviders();
-
   return {
     props: { providers },
   };

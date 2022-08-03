@@ -6,7 +6,7 @@ import Track from "./Track";
 
 const Body = ({ chooseTrack, spotifyApi }) => {
   const { data: session } = useSession();
-  const accessToken = session?.accessToken;
+  const { accessToken } = session;
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [newReleases, setNewReleases] = useState([]);
@@ -51,10 +51,11 @@ const Body = ({ chooseTrack, spotifyApi }) => {
       );
     });
   }, [accessToken]);
+
   return (
-    <section className="bg-black ml-24 py-4 space-y-8 md:max-w-10xl flex-grow md:mr-2.5">
+    <section className="bg-black ml-24 py-2.5 space-y-3 md:max-w-10xl flex-grow md:mr-2.5">
       <Search search={search} setSearch={setSearch} />
-      <div className="grid overflow-y-scroll scrollbar-hide h-96 py-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-4 gap-y-8 p-4">
+      <div className="grid overflow-y-scroll scrollbar-hide h-90 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-4 gap-y-8 p-2">
         {searchResult.length === 0
           ? newReleases
               .slice(0, 5)
@@ -76,7 +77,7 @@ const Body = ({ chooseTrack, spotifyApi }) => {
               ))}
       </div>
       <div className="flex gap-x-8 absolute min-w-full md:relative ml-6">
-        <div className="hidden xl:inline max-w-[270px]">
+        <div className="hidden xl:inline max-w-[300px]">
           <h2 className="text-white font-bold mb-3">Genres</h2>
           <div className="flex gap-x-2 gap-y-2.5 flex-wrap mb-3">
             <div className="genre">Classic</div>
@@ -94,11 +95,11 @@ const Body = ({ chooseTrack, spotifyApi }) => {
           </button>
         </div>
 
-        <div className="w-full pr-11">
+        <div className="w-full pr-11 ">
           <h2 className="text-white font-bold mb-3">
             {searchResult.length === 0 ? "New Releases" : "Tracks"}
           </h2>
-          <div className="space-y-3 border-2 border-[#262626] rounded-2xl p-3 bg-[#0D0D0D] overflow-y-scroll h-[1000px] md:h-96 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-thumb-rounded hover:scrollbar-thumb-gray-500 w-[830px]">
+          <div className="space-y-3 border-2 border-[#262626] rounded-2xl p-3 bg-[#0D0D0D] overflow-y-scroll h-[1000px] md:h-96 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-thumb-rounded hover:scrollbar-thumb-gray-500 ">
             {searchResult.length === 0
               ? newReleases
                   .slice(5, newReleases.length)

@@ -17,7 +17,7 @@ const Search = ({ search, setSearch }) => {
           <button className="tag">House</button>
           <button className="tag">Minimal</button>
         </div>
-        <div className="flex items-center space-x-1.5 text-[#CECECE] pl-4">
+        <div className="flex items-center space-x-1.5 text-[#CECECE] pl-4 cursor-pointer">
           <MdOutlineShortText className="text-2xl animate-pulse" />
           <span className="font-medium text-sm">Filters</span>
         </div>

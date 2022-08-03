@@ -9,3 +9,8 @@ export const playingTrackState = atom({
   key: "playingTrackState",
   default: "",
 });
+
+export const currentTrackIdState = atom({
+  key: "currentTrackIdState",
+  default: null,
+});
